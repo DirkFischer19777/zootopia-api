@@ -73,13 +73,34 @@ def user_input():
     animal_request = input("please enter animal you like to get information from: ")
     return animal_request
 
+
 def main():
+    # Ask User for animal
     animal_name = user_input()
+
+    # Request API Data
     animals = load_data(animal_name)
-    output_string = print_animals(animals)
+
+    # HTML-Template einlesen
     html_input = read_html()
-    html_output = replace_placeholder(output_string, html_input)
+
+    # check if animal does exist
+    if not animals:
+        # if animal does not exist
+        html_output = html_input.replace(
+            "__REPLACE_ANIMALS_INFO__",
+            f'<h2>The animal "{animal_name}" doesn\'t exist.</h2>'
+        )
+        print(f"The animal {animal_name} doesn´t exist")
+    else:
+        # if animal does exist
+        output_string = print_animals(animals)
+        html_output = replace_placeholder(output_string, html_input)
+
+    # Store HTML
     save_data(html_output)
+
+    # Message to user
     print("Website was successfully generated to the file animals.html.")
 
 
