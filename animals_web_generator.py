@@ -3,12 +3,13 @@ import requests
 
 
 
-def load_data():
+def load_data(animal_name):
     """ Loads animal data from the API """
     API_KEY = "tEPzQEsWwciI03HXq7n+IA==RR4fNvH4lVhGTxGa"
-    url = "https://api.api-ninjas.com/v1/animals?name=fox"
+    url = "https://api.api-ninjas.com/v1/animals"
+    params = {"name": animal_name}
 
-    response = requests.get(url, headers={"X-Api-Key": API_KEY})
+    response = requests.get(url,params=params, headers={"X-Api-Key": API_KEY})
 
     if response.status_code == 200:
         return response.json()  # gibt ein Array von Tieren zurück
@@ -67,13 +68,19 @@ def save_data(data):
     with open("animals.html", "w", encoding="utf-8") as file:
         file.write(data)
 
+def user_input():
+    """Asks the user to input animal to request"""
+    animal_request = input("please enter animal you like to get information from: ")
+    return animal_request
 
 def main():
-    animals = load_data()
+    animal_name = user_input()
+    animals = load_data(animal_name)
     output_string = print_animals(animals)
     html_input = read_html()
     html_output = replace_placeholder(output_string, html_input)
     save_data(html_output)
+    print("Website was successfully generated to the file animals.html.")
 
 
 if __name__ == "__main__":
