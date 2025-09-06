@@ -1,21 +1,9 @@
-import json
-import requests
+
+
+import data_fetcher
 
 
 
-def load_data(animal_name):
-    """ Loads animal data from the API """
-    API_KEY = "tEPzQEsWwciI03HXq7n+IA==RR4fNvH4lVhGTxGa"
-    url = "https://api.api-ninjas.com/v1/animals"
-    params = {"name": animal_name}
-
-    response = requests.get(url,params=params, headers={"X-Api-Key": API_KEY})
-
-    if response.status_code == 200:
-        return response.json()  # gibt ein Array von Tieren zurück
-    else:
-        print("Fehler beim Abrufen der API:", response.status_code)
-        return []
 
 
 def serialize_animal(animal_obj):
@@ -79,7 +67,7 @@ def main():
     animal_name = user_input()
 
     # Request API Data
-    animals = load_data(animal_name)
+    animals = data_fetcher.fetch_data(animal_name)
 
     # HTML-Template einlesen
     html_input = read_html()
